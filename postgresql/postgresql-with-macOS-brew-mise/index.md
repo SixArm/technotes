@@ -54,11 +54,19 @@ Stop:
 
 ## Demo
 
-Create a demo database:
+Create a role:
 
-"$pg/bin/psql" -D "$pg/data" stop --mode smart
+```sh
+psql -U postgres -c "CREATE ROLE demo_owner WITH LOGIN ENCRYPTED PASSWORD 'secret';"
+```
 
-Redo a demo database:
+Create a database:
+
+```sh
+psql -U postgres -c "CREATE DATABASE demo_development with owner = demo_owner;"
+```
+
+If you ever need to redo a demo database:
 
 ```sh
 psql -U postgres 
@@ -69,5 +77,5 @@ psql -U postgres
 Restore a demo database:
 
 ```sh
-pg_restore --exit-on-error   -U heron_owner --no-owner --role=heron_owner -d heron_development -1 ~/Downloads/heron_dump.dump 
+pg_restore --exit-on-error   -U demo_owner --no-owner --role=heron_owner -d demo_development -1 demo_development.dump 
 ```

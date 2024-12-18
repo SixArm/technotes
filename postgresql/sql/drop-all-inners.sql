@@ -8,7 +8,7 @@
 --
 -- Rather than type this in at the "psql" prompt I would suggest you copy it to a file and then pass the file as input to psql using the "--file" or "-f" options:
 --
---     psql -f clean_all_pg.sql
+--     psql -f drop-all-inners.sql
 --
 -- https://stackoverflow.com/questions/3327312/how-can-i-drop-all-the-tables-in-a-postgresql-database
 --

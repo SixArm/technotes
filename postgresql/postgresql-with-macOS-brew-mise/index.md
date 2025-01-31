@@ -21,19 +21,19 @@ Result:
 $HOME/.local/share/mise/installs/postgres/17.2/
 ```
 
+Print the binary file path:
+
+```sh
+mise which postgres
+```
+
 Print the installation directory:
 
 ```sh
 mise where postgres
 ```
 
-Print the binary file:
-
-```sh
-mise which postgres
-```
-
-If you wish to track the installation directory:
+Optionally track the installation directory:
 
 ```sh
 export x="$(mise where postgres)"

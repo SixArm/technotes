@@ -11,5 +11,6 @@ docker run \
 	--publish 5432:5432 \
 	--volume postgres_data:/var/lib/postgresql/data postgres \
 	--detach
+docker ps
 psql --host=localhost --username=postgres --password
 ```

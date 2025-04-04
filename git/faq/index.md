@@ -2,6 +2,8 @@
 
 Git frequently asked questions (FAQs) by beginners.
 
+If you prefer videos, the try  [YouTube search "What is Git?"](https://www.youtube.com/results?search_query=What+is+Git%3F)
+
 ## What is Git?
 
 Git is a distributed version control system that tracks changes in source code

@@ -90,7 +90,7 @@ project's history, as it determines the base commit for new changes, merges, or
 resets. Additionally, `HEAD` can also be used in "detached" mode when pointing
 directly to a specific commit instead of a branch.
 
-### What is a Git tag?
+## What is a Git tag?
 
 A Git tag is a reference to a specific point in the repository's history,
 typically used to mark important milestones like software releases or version
@@ -143,7 +143,7 @@ are conflicting modifications between branches, it requires manual intervention
 to resolve those conflicts before completing the merge. Merging is a key feature
 of Git that facilitates collaboration and helps maintain a unified codebase.
 
-### What is a Git merge conflict?
+## What is a Git merge conflict?
 
 A Git merge conflict occurs when Git is unable to automatically merge changes
 from two different branches due to conflicting modifications in the same part of

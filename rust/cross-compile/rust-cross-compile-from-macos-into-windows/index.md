@@ -40,12 +40,30 @@ Ensure your path includes `~/.cargo/bin` or equivalent:
 export PATH="$PATH:$HOME/.cargo/bin"
 ```
 
+Build a release:
+
+```sh
+cargo build --release --target=x86_64-pc-windows-gnu
+```
+
+The release file is a Windows executable and saved here:
+
+```sh
+ls target/x86_64-pc-windows-gnu/release/*.exe 
+```
+
+To make it available to people, We prefer to version it with the project:
+
+```sh
+git add target/x86_64-pc-windows-gnu/release/CHANGE_THIS.exe 
+```
+
 ## Commands
 
 Show the active toolchain, home, profile, etc.:
 
 ```sh
-rustup show — shows targets amn toolchain
+rustup show
 ```
 
 Show target list i.e. all supported targets:

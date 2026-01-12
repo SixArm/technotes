@@ -1,25 +1,48 @@
-# PostgreSQL via Docker
+# PostgreSQL 18 via Podman
 
-<https://www.dbvis.com/thetable/how-to-set-up-postgres-using-docker/>
+<https://medium.com/@mehmetozanguven/running-postgresql-with-podman-4b71e31761b2>
+
+Start a podman machine:
+
+```sh
+podman machine start
+```
+
+Search for postgres containers:
+
+```sh
+podman search postgres
+```
 
 Pull the official Docker library progress. We prefer being explicit about the version number 18 and operating system Trixie a.k.a. Debian 13, which we prefer for development because it tends to be easier.
 
 ```sh
-docker pull postgres:18-trixie
+podman pull docker.io/library/postgres:18-trixie
+```
+
+Verify the pull succeeded:
+
+```sh
+podman images
+```
+
+Create a directory (a.k.a. volume) that will hold postgres data. This is because data inside the container will be deleted when we remove the container’s images.
+
+```sh
+podman volume create my-postgres-docker-volume
 ```
 
 Run:
 
 ```sh
-docker volume create my-postgres-docker-volume
-docker run \
-	--name my-postgres-docker-container \
-	--env POSTGRES_PASSWORD=secret \
-	--env PGDATA=/var/lib/postgresql/18/docker \
-	--publish 5432:5432 \
-	--volume my-postgres-docker-volume:/var/lib/postgresql \
-	--detach \
-	postgres:18-trixie
+podman run \
+  --name my-postgres-podman-container \
+  --env POSTGRES_PASSWORD=secret \
+  --publish 5432:5432 \
+  --volume "my-postgres-podman-volume:/var/lib/postgresql:Z"  \
+  --detach \
+  --tty \
+  postgres:18-trixie
 ```
 
 Notes:
@@ -46,6 +69,11 @@ Caution: there is a breaking change from Podman PostgreSQL 17 to 18:
 
 - This also changes the `VOLUME` to `/var/lib/postgresql`, which should be more reasonable, and make the upgrade constraints more obvious.
 
+Troubleshooting:
+
+```sh
+podman logs <container>
+```
 
 ## Usage
 
@@ -87,6 +115,8 @@ psql --host=localhost --username=postgres --password
 ```
 
 ## Upgrade
+
+IMPORTANT: These instructions are for Docker PostgreSQL, and are provided here because we expect Podman PostgreSQL to work similarily.
 
 <https://news.onbrn.com/step-by-step-guide-upgrading-postgresql-docker-containers/>
 

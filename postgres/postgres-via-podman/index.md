@@ -29,7 +29,7 @@ podman images
 Create a directory (a.k.a. volume) that will hold postgres data. This is because data inside the container will be deleted when we remove the container’s images.
 
 ```sh
-podman volume create my-postgres-docker-volume
+podman volume create my-postgres-podmap-volume
 ```
 
 Run:

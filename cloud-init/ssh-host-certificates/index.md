@@ -24,8 +24,6 @@ the RSA pubkey with the same CA.
 
 ## 1. Create the CA (once)
 
-The CA is just an SSH key pair you reserve for signing.
-
 Generate it somewhere safe — ideally an offline machine, a Hardware Security Module (HSM), or a Vault transit key:
 
 ```
@@ -244,7 +242,7 @@ ssh-keygen \
   web01_ed25519.pub
 ```
 
-<deetails>
+<details>
     <summary>🛈</summary>
 
 That's the signing command — same `ssh-keygen` binary as before, but in a completely different mode. The presence of `-s` flips it: instead of generating a new key pair, the tool reads an existing public key, signs it with the CA's private key, and writes out a certificate. Walking through each flag:
@@ -333,9 +331,12 @@ ssh_keys:
 
 Cloud-init writes the three files to `/etc/ssh/ssh_host_ed25519_key{,.pub,-cert.pub}` and adds `HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub` to `sshd_config` automatically. Easy, but inherits the user-data exposure problem from before — the private key is sitting in the metadata service.
 
-**2b. The better approach: sign on boot**
+## 2b. The better approach: sign on boot
 
-Let cloud-init do its default thing and _generate_ fresh host keys on the new VPS. The public key isn't sensitive, so the instance can hand it to a signing service and get a cert back. The CA private key never leaves the signer; the host private key never leaves the host.
+Let cloud-init do its default thing and _generate_ fresh host keys on the new
+VPS. The public key isn't sensitive, so the instance can hand it to a signing
+service and get a cert back. The CA private key never leaves the signer; the
+host private key never leaves the host.
 
 ```yaml
 #cloud-config
@@ -359,23 +360,41 @@ runcmd:
     systemctl reload sshd
 ```
 
-(Replace the GCP metadata bit with whatever your platform offers — AWS instance identity document, Azure managed identity token, an OIDC provider, mTLS with a bootstrap cert, etc. The point is the signing service authenticates the _instance_, validates the requested principals against what it actually knows about that instance, and only then signs.)
+Replace the GCP metadata bit with whatever your platform offers — AWS instance
+identity document, Azure managed identity token, an OIDC provider, mTLS with a
+bootstrap cert, etc. The point is the signing service authenticates the
+_instance_, validates the requested principals against what it actually knows
+about that instance, and only then signs.
 
 For the signing service itself, three sensible options rather than rolling your own:
 
-- **Smallstep `step-ca`** has first-class SSH host cert support and built-in provisioners for OIDC, AWS/GCP/Azure instance identity, X5C, and JWK. This is what most people should use.
-- **HashiCorp Vault**'s SSH secrets engine: configure a host-signing role, then the instance does `vault write ssh-host-signer/sign/host public_key=@/etc/ssh/ssh_host_ed25519_key.pub` after authenticating with the cloud-auth method.
-- A 50-line homegrown service that wraps `ssh-keygen -s` is fine if your needs are simple — but you have to think carefully about who's allowed to request a cert for which principals.
+- **Smallstep `step-ca`** has first-class SSH host cert support and built-in
+  provisioners for OIDC, AWS/GCP/Azure instance identity, X5C, and JWK. This is
+  what most people should use.
+
+- **HashiCorp Vault**'s SSH secrets engine: configure a host-signing role, then
+  the instance does `vault write ssh-host-signer/sign/host
+public_key=@/etc/ssh/ssh_host_ed25519_key.pub` after authenticating with the
+  cloud-auth method.
+
+- A 50-line homegrown service that wraps `ssh-keygen -s` is fine if your needs
+  are simple — but you have to think carefully about who's allowed to request a
+  cert for which principals.
 
 **3. Client trust**
 
-None of this matters until clients trust the CA. Drop one line into `~/.ssh/known_hosts` (or `/etc/ssh/ssh_known_hosts` system-wide):
+None of this matters until clients trust the CA. Drop one line into
+`~/.ssh/known_hosts` (or `/etc/ssh/ssh_known_hosts` system-wide):
 
 ```
 @cert-authority *.example.com ssh-ed25519 AAAA…contents of host_ca.pub…
 ```
 
-The `@cert-authority` marker means "any host presenting a certificate signed by this key, whose principals match the pattern, is trusted." From now on, `ssh web01.example.com`, `ssh web47.example.com`, anything new your CA signs — no prompts, no fingerprint emails to the team, no stale entries when you rebuild a box.
+The `@cert-authority` marker means "any host presenting a certificate signed by
+this key, whose principals match the pattern, is trusted." From now on, `ssh
+web01.example.com`, `ssh web47.example.com`, anything new your CA signs — no
+prompts, no fingerprint emails to the team, no stale entries when you rebuild a
+box.
 
 Inspect a cert any time with:
 
@@ -385,12 +404,27 @@ ssh-keygen -L -f web01_ed25519-cert.pub
 
 …which prints principals, validity window, key ID, critical options, and the signing CA's fingerprint.
 
-**Operational notes that bite people**
+## Operational notes that bite people
 
-Short lifetimes are the point. Issue certs valid for days or a few weeks and have hosts re-sign on a timer (`systemd` timer running the same `runcmd` snippet). Expiry is your revocation mechanism — if a host is compromised, its cert dies on its own and you don't need to push KRLs. If you do need explicit revocation, `ssh-keygen -k` builds a key revocation list and `RevokedKeys /etc/ssh/krl` in `sshd_config`/client config consumes it.
+Short lifetimes are the point. Issue certs valid for days or a few weeks and
+have hosts re-sign on a timer (`systemd` timer running the same `runcmd`
+snippet). Expiry is your revocation mechanism — if a host is compromised, its
+cert dies on its own and you don't need to push KRLs. If you do need explicit
+revocation, `ssh-keygen -k` builds a key revocation list and `RevokedKeys
+/etc/ssh/krl` in `sshd_config`/client config consumes it.
 
-Match algorithms: sign an Ed25519 host key with… anything, but if your CA is RSA and you're signing RSA host keys, pass `-t rsa-sha2-512` to `ssh-keygen -s` so you don't end up with an `ssh-rsa` (SHA-1) signature that modern OpenSSH refuses.
+Match algorithms: sign an Ed25519 host key with… anything, but if your CA is RSA
+and you're signing RSA host keys, pass `-t rsa-sha2-512` to `ssh-keygen -s` so
+you don't end up with an `ssh-rsa` (SHA-1) signature that modern OpenSSH
+refuses.
 
-Principals are checked against what the _client typed_, not what the server is actually called. If users connect by IP sometimes, include the IP in `-n`. If you're behind a load balancer, sign every backend with the LB's hostname as a principal and clients won't care which one they hit.
+Principals are checked against what the _client typed_, not what the server is
+actually called. If users connect by IP sometimes, include the IP in `-n`. If
+you're behind a load balancer, sign every backend with the LB's hostname as a
+principal and clients won't care which one they hit.
 
-Finally, this composes cleanly with user certificates — same CA setup, drop `-h`, sign user public keys, and put `TrustedUserCAKeys /etc/ssh/user_ca.pub` in `sshd_config`. At that point you've replaced both `known_hosts` churn and `authorized_keys` distribution with a single signing flow, which is the real prize.
+Finally, this composes cleanly with user certificates — same CA setup, drop
+`-h`, sign user public keys, and put `TrustedUserCAKeys /etc/ssh/user_ca.pub` in
+`sshd_config`. At that point you've replaced both `known_hosts` churn and
+`authorized_keys` distribution with a single signing flow, which is the real
+prize.

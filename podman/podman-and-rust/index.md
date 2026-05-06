@@ -272,14 +272,3 @@ EXPOSE 8080
 # shutdown instead of a 10-second timeout.
 CMD ["cargo", "watch", "-x", "run"]
 ````
-
-Add to `.dockerignore`:
-
-```txt
-target
-.git
-.gitignore
-*.md
-.vscode
-.env
-```

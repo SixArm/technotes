@@ -33,24 +33,17 @@ Print the installation directory:
 mise where postgres
 ```
 
-Optionally track the installation directory:
-
-```sh
-export x="$(mise where postgres)"
-```
-
 Start:
 
 ```sh
-"$x/bin/pg_ctl" -D "$x/data" -l "$x/log" start 
+dir="$(mise where postgres)" "$dir/bin/pg_ctl" -D "$dir/data" -l "$dir/log" start
 ```
 
 Stop:
 
 ```sh
-"$x/bin/pg_ctl" -D "$x/data" stop --mode smart
+dir="$(mise where postgres)" "$dir/bin/pg_ctl" -D "$dir/data" stop --mode smart
 ```
-
 
 ## Demo
 
@@ -69,13 +62,13 @@ psql -U postgres -c "CREATE DATABASE demo_development with owner = demo_owner;"
 If you ever need to redo a demo database:
 
 ```sh
-psql -U postgres 
--c 'drop database if exists demo_development' 
+psql -U postgres
+-c 'drop database if exists demo_development'
 -c 'create database demo_development with owner = demo_owner;'
 ```
 
 Restore a demo database:
 
 ```sh
-pg_restore --exit-on-error   -U demo_owner --no-owner --role=heron_owner -d demo_development -1 demo_development.dump 
+pg_restore --exit-on-error   -U demo_owner --no-owner --role=heron_owner -d demo_development -1 demo_development.dump
 ```

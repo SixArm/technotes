@@ -6,19 +6,19 @@ Install prerequisites via brew:
 brew install gcc readline zlib curl openssl@1.1 ossp-uuid icu4c pkg-config
 ```
 
-Install PostgreSQL via mise:
+Install PostgreSQL 18 via mise:
 
 ```sh
 PKG_CONFIG_PATH="$(brew --prefix)/lib/pkgconfig:$(brew --prefix icu4c)/lib/pkgconfig" \
 LDFLAGS="-L$(brew --prefix)/lib" \
 CPPFLAGS="-I$(brew --prefix)/include" \
-mise use postgres --verbose
+mise use postgres@18 --verbose
 ```
 
 Result:
 
 ```
-$HOME/.local/share/mise/installs/postgres/17.2/
+$HOME/.local/share/mise/installs/postgres/18.4/
 ```
 
 Print the binary file path:
@@ -36,13 +36,13 @@ mise where postgres
 Start:
 
 ```sh
-dir="$(mise where postgres)" "$dir/bin/pg_ctl" -D "$dir/data" -l "$dir/log" start
+"$(mise where postgres)/bin/pg_ctl" -D "$(mise where postgres)/data" -l "$(mise where postgres)/log" start
 ```
 
 Stop:
 
 ```sh
-dir="$(mise where postgres)" "$dir/bin/pg_ctl" -D "$dir/data" stop --mode smart
+"$(mise where postgres)/bin/pg_ctl" -D "$(mise where postgres)/data" stop --mode smart
 ```
 
 ## Demo

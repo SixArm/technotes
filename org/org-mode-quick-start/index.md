@@ -87,11 +87,35 @@ TODO:
 **** TODO A todo item.
 ```
 
+TODO with priority number 0-64, and I prefer 1-9 because of equal spacing:
+
+```org
+*** TODO [#1] A todo item.
+```
+
+TODO with rollup completion counter, which is auto-updated by org mode based on TODO children:
+
+```org
+*** TODO A todo item. [1/5]
+```
+
+TODO with rollup completion percentage, which is auto-updated by org mode based on TODO children:
+
+```org
+*** TODO A todo item. [20%]
+```
+
 DONE:
 
 ```org
 **** DONE A done item.
 ```
+
+### Rollups
+
+### Headlines with rollups
+
+
 
 ## Time
 

@@ -1,5 +1,30 @@
 # Org Mode Quick Start
 
+## Quick examples
+
+Contact:
+
+```org
+* Alice Adams
+:properties:
+:email: alice@example.com
+:phone: 1-800-555-5555
+:end:
+:note:
+This text can be
+on multiple lines
+:end
+```
+
+Todo:
+
+```org
+* TODO Lorem Ipsum [/]
+- [ ] Alpha
+- [ ] Bravo
+- [ ] Charlie
+```
+
 ## Preamble
 
 ```org
@@ -18,13 +43,13 @@
 
 ## Markers
 
-| Tag           | `:hello:` |
-| Bold          | `*hello*` |
-| Italic        | `/hello/` |
-| Underline     | `_hello_` |
+| Tag | `:hello:` |
+| Bold | `*hello*` |
+| Italic | `/hello/` |
+| Underline | `_hello_` |
 | Strikethrough | `+hello+` |
-| Code          | `~hello~` |
-| Verbatim      | `=hello=` |
+| Code | `~hello~` |
+| Verbatim | `=hello=` |
 
 ### Context tags
 
@@ -115,8 +140,6 @@ DONE:
 
 ### Headlines with rollups
 
-
-
 ## Time
 
 Timestamp:
@@ -186,8 +209,8 @@ Properties are key-value pairs associated with an entry. They live in a special 
 
 ```org
 #+BEGIN_COMMENT
-Think of the circularity as posing a sort 
-of koan, whose contemplation may ultimately 
+Think of the circularity as posing a sort
+of koan, whose contemplation may ultimately
 yield a higher spiritual awareness."
 #+END_COMMENT
 ```
@@ -196,8 +219,8 @@ yield a higher spiritual awareness."
 
 ```org
 #+BEGIN_CENTER
-Nature is an infinite sphere 
-of which the center is everywhere 
+Nature is an infinite sphere
+of which the center is everywhere
 and the circumference nowhere.
 #+END_CENTER
 ```
@@ -206,7 +229,7 @@ and the circumference nowhere.
 
 ```org
 #+BEGIN_QUOTE
-Everything should be made 
+Everything should be made
 as simple as possible,
 but not any simpler.
 - Albert Einstein

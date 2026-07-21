@@ -166,7 +166,7 @@ Timestamp with repeater each week:
 <2006-11-02 Thu 10:00 +1w>
 ```
 
-Timestamp range:
+Timestamp range uses a double-dash:
 
 ```org
 <2004-08-23 Mon 10:00-11:00>--<2004-08-26 Thu 10:00-11:00>

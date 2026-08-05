@@ -1,52 +1,130 @@
 # Org tasks
 
-## TODO
+## List
 
-TODO:
-
-```org
-* TODO A todo item.
-```
-
-DONE:
+List items:
 
 ```org
-* DONE A done item.
+* Call mom
+* Walk dog
+* Work out
 ```
 
-Aside: Org has special handling for the keywords TODO and DONE, and also can customize these.
+## TODO & DONE
 
-### Priority
-
-TODO with priority rank 1 to 9.
+TODO prefix:
 
 ```org
-* TODO [#1] A todo item.
+* TODO Call mom
 ```
 
-TODO with priority rank A, B, C.
+DONE prefix:
 
 ```org
-* TODO [#A] A todo item.
+* DONE Call mom
 ```
 
-Aside: Org has special handlig for priority to sort it. Priority can be any number 0-64 or any letter. Default is A, B, C.
+Org has special handling for the TODO prefix and DONE prefix, and also has ways you can customize these.
+
+## Tag
+
+Tag syntax:
+
+```org
+:foo:
+```
+
+Example:
+
+```org
+* TODO Call mom :important:
+```
+
+## Priority
+
+Priority rank can use numbers such as 1 to 9.
+
+```org
+* TODO [#1] Call mom
+* TODO [#2] Walk dog
+* TODO [#3] Work out
+```
+
+Priority rank can use letters such as A to Z.
+
+```org
+* TODO [#A] Call mom
+* TODO [#B] Walk dog
+* TODO [#C] Work out
+```
+
+Org has special handling for priority to sort it. Priority can be any number 0-64 or any letter. Default is A, B, C.
+
+## Sublists
+
+Sublists use indentation like this:
+
+```org
+* TODO Work out
+  * TODO Warm up
+  * TODO Run laps
+  * TODO Cool down
+```
+
+Org has special handling for nesting: you can use the tab to open a list and shut a list.
+
+## Checklists
+
+Checklists use a dash then braces like this:
+
+```org
+* TODO Work out
+  - [ ] Warm up
+  - [ ] Run laps
+  - [ ] Cool down
+```
+
+When you're doing an item, add "-" like this first item:
+
+```org
+* TODO Work out
+  - [-] Warm up
+  - [ ] Run laps
+  - [ ] Cool down
+```
+
+When you've done an item, add "x" like this first item:
+
+```org
+* TODO Work out
+  - [x] Warm up
+  - [ ] Run laps
+  - [ ] Cool down
+```
+
+Org has special handling for checklists and checkboxes.
 
 ### Progress
 
-TODO with progress percent.
+Progress percent:
 
 ```org
-* TODO A todo item. [20%]
+* TODO Work out [33%]
+  - [x] Warm up
+  - [ ] Run laps
+  - [ ] Cool down
 ```
 
-TODO with progress counts.
+Progress counter:
 
 ```org
-* TODO A todo item. [1/5]
+* TODO Work out [1/3]
+  - [x] Warm up
+  - [ ] Run laps
+  - [ ] Cool down
 ```
 
-Aside: Org has special handling for progress percent to auto-update it based on TODO children.
+Org has special handling for progress auto-updates based on TODO children.
 
 ## Time
 
@@ -80,7 +158,9 @@ Timestamp range double-dash:
 <2004-08-23 Mon 10:00-11:00>--<2004-08-26 Thu 10:00-11:00>
 ```
 
-## Scheduled & Dealdine
+Org has special handling for timing.
+
+## Scheduled & Deadline
 
 Scheduled keyword:
 
@@ -92,4 +172,64 @@ Deadline keyword:
 
 ```org
 DEADLINE: <YYYY-MM-DD Day>
+```
+
+Org has special handling for these two words for agendas.
+
+## Example: email list
+
+```org
+* TODO Send emails
+  - [ ] alice@example.com
+  - [ ] bob@example.com
+  - [ ] carol@exmaple.com
+```
+
+## Example: user story checklist
+
+```org
+* TODO Try search
+  - [ ] Given I see the search box
+  - [ ] When I enter my search terms
+  - [ ] Then I see the search results
+```
+
+## Example: shopping checklist
+
+```org
+* TODO Shop
+  * Fruits
+    - [ ] Apples
+    - [ ] Bananas
+  * Greens
+    - [ ] Kale
+    - [ ] Spinach
+```
+
+## Example: exercise checklist
+
+```org
+* TODO Exercise
+  * Arms
+    - [ ] Curls
+    - [ ] Pushups
+  * Legs
+    - [ ] Jumps
+    - [ ] Squats
+```
+
+## Example: meeting checklist
+
+```org
+* TODO Meet stakeholders
+  * Before
+    - [ ] Send invitations
+    - [ ] Prepare materials
+  * During
+    - [ ] Start with purpose
+    - [ ] Work toward outcomes
+    - [ ] Finish with actions
+  * After
+    - [ ] Send followups
+    - [ ] Track outcomes
 ```

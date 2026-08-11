@@ -1,0 +1,32 @@
+* TODO New Year's Eve Party
+  SCHEDULED: <2026-12-31 Thu 22:00>--<2027-01-01 Thu 02:00>
+  * Before
+    - [ ] Send invitations
+    - [ ] Prepare snacks
+  * During
+    - [ ] Welcome guests
+    - [ ] Midnight countdown
+  * After
+    - [ ] Send thank yous
+    - [ ] Share photos
+* TODO Shopping
+  DEADLINE: <2026-12-31 Thu 18:00>
+  * Fruits
+    - [ ] Apples
+    - [ ] Bananas
+  * Greens
+    - [ ] Kale
+    - [ ] Spinach
+  * Drinks
+    - [ ] Juice
+    - [ ] Soda
+* TODO Exercise
+  * Arms
+    - [ ] Curls
+    - [ ] Pushups
+  * Legs
+    - [ ] Jumps
+    - [ ] Squats
+  * Outdoors
+    - [ ] Walk
+    - [ ] Bike

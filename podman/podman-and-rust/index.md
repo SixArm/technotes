@@ -5,7 +5,7 @@
 Debian apt:
 
 ```sh
-sudo apt-get -y install podma
+sudo apt-get -y install podman
 ```
 
 macOS brew:
@@ -21,6 +21,13 @@ Run:
 ```sh
 podman machine init
 podman machine start
+podman machine list
+```
+
+Connect:
+
+```sh
+podman exec -it <container_name_or_id> bash
 ```
 
 ## Pull Rust base image
